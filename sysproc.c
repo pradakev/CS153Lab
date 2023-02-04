@@ -16,14 +16,30 @@ sys_fork(void)
 int
 sys_exit(void)
 {
-  exit();
-  return 0;  // not reached
+  // exit();     
+  // return 0;  // not reached
+
+  int exitStatus;
+  if(argint(0, &exitStatus) < 0)
+    return -1;
+  exit(exitStatus);
+  return 0; // not reached?
 }
 
 int
 sys_wait(void)
 {
-  return wait();
+  int *status;
+  if(argptr(0, (void*)&status, 2*sizeof(status[0])) < 0) {
+    return -1;
+  }
+
+  return wait(status);
+
+  // return wait();
+  // Here we have to get the current processes children
+  // execute them all (if they exist), and return exit 
+  // statuses of children
 }
 
 int
@@ -89,3 +105,34 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int
+sys_hello(void)
+{
+  hello();
+  return 0;
+}
+
+int
+sys_getparents(void)
+{
+  getparents();
+  return 0;
+}
+
+int 
+sys_waitpid(void)
+{
+  // get a particular pid by scanning through ptable
+  int pid;
+
+  if(argint(0, &pid) < 0)
+    return -1;
+  int *status;
+  if(argptr(0, (void*)&status, 2*sizeof(status[0])) < 0) {}
+
+  waitpid(pid, status, 0);
+  return 0;
+}
+
+

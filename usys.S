@@ -29,3 +29,6 @@ SYSCALL(getpid)
 SYSCALL(sbrk)
 SYSCALL(sleep)
 SYSCALL(uptime)
+SYSCALL(hello) // J.H
+SYSCALL(getparents) // kp
+SYSCALL (waitpid) // kp
