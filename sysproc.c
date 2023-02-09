@@ -20,9 +20,8 @@ sys_exit(void)
   // return 0;  // not reached
 
   int exitStatus;
-  // if(argint(0, &exitStatus) < 0)
-  //   return -1;
-  argint(0, &exitStatus);
+  if(argint(0, &exitStatus) < 0)
+    return -1;
   exit(exitStatus);
   return 0; // not reached?
 }
@@ -31,10 +30,10 @@ int
 sys_wait(void)
 {
   int *status;
-  if(argptr(0, (void*)&status, sizeof(status)) < 0) {
+  if(argptr(0, (void*)&status, 2*sizeof(status[0])) < 0) {
     return -1;
   }
-  // cprintf(*status)
+
   return wait(status);
 
   // return wait();
@@ -130,7 +129,7 @@ sys_waitpid(void)
   if(argint(0, &pid) < 0)
     return -1;
   int *status;
-  if(argptr(1, (void*)&status, sizeof(status)) < 0) {}
+  if(argptr(0, (void*)&status, 2*sizeof(status[0])) < 0) {}
 
   waitpid(pid, status, 0);
   return 0;
